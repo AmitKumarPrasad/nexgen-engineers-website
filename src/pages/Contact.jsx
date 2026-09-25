@@ -4,25 +4,51 @@ import Intro from '../components/Intro';
 import { services } from '../data/services';
 
 const initialForm = { name: '', email: '', service: '', timeline: '', details: '' };
+const contactEndpoint = import.meta.env.VITE_CONTACT_ENDPOINT;
+
+function buildMailto(form) {
+  const subject = encodeURIComponent(`NexGen project enquiry — ${form.service}`);
+  const body = encodeURIComponent(
+    `Name: ${form.name}\nEmail: ${form.email}\nService: ${form.service}\nTimeline: ${form.timeline || 'Not specified'}\n\nProject details:\n${form.details}`
+  );
+  return `mailto:hello@nexgenengineers.com?subject=${subject}&body=${body}`;
+}
 
 export default function Contact() {
   const [form, setForm] = useState(initialForm);
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState({ type: 'idle', message: '' });
 
   const updateField = event => {
     const { name, value } = event.target;
     setForm(current => ({ ...current, [name]: value }));
-    if (submitted) setSubmitted(false);
+    if (status.type !== 'idle') setStatus({ type: 'idle', message: '' });
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
-    const subject = encodeURIComponent(`NexGen project enquiry — ${form.service}`);
-    const body = encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\nService: ${form.service}\nTimeline: ${form.timeline || 'Not specified'}\n\nProject details:\n${form.details}`
-    );
-    window.location.href = `mailto:hello@nexgenengineers.com?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+    setStatus({ type: 'submitting', message: 'Sending your enquiry…' });
+
+    if (!contactEndpoint) {
+      window.location.href = buildMailto(form);
+      setStatus({ type: 'success', message: 'Your email client is being opened with the enquiry details. If it does not open, use the Email Us button.' });
+      return;
+    }
+
+    try {
+      const response = await fetch(contactEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, source: 'nexgen-engineers-website' }),
+      });
+
+      if (!response.ok) throw new Error(`Contact endpoint returned ${response.status}`);
+      setForm(initialForm);
+      setStatus({ type: 'success', message: 'Thanks — your enquiry has been submitted. We will get back to you soon.' });
+    } catch (error) {
+      console.error('NexGen contact submission failed', error);
+      window.location.href = buildMailto(form);
+      setStatus({ type: 'success', message: 'We could not reach the online contact service, so your email client is being opened instead.' });
+    }
   };
 
   return <>
@@ -49,26 +75,15 @@ export default function Contact() {
               <div className="row g-3">
                 <div className="col-md-6"><label className="form-label fw-semibold" htmlFor="contact-name">Name</label><input id="contact-name" name="name" value={form.name} onChange={updateField} className="form-control" required autoComplete="name" placeholder="Your name" /></div>
                 <div className="col-md-6"><label className="form-label fw-semibold" htmlFor="contact-email">Work email</label><input id="contact-email" name="email" value={form.email} onChange={updateField} type="email" className="form-control" required autoComplete="email" placeholder="you@company.com" /></div>
-                <div className="col-md-6">
-                  <label className="form-label fw-semibold" htmlFor="contact-service">Service</label>
-                  <select id="contact-service" name="service" value={form.service} onChange={updateField} className="form-select form-control" required>
-                    <option value="" disabled>Select a service</option>
-                    {services.map(service => <option key={service.title} value={service.title}>{service.title}</option>)}
-                  </select>
-                </div>
-                <div className="col-md-6">
-                  <label className="form-label fw-semibold" htmlFor="contact-timeline">Target timeline</label>
-                  <select id="contact-timeline" name="timeline" value={form.timeline} onChange={updateField} className="form-select form-control">
-                    <option value="">Select timeline</option><option>Under 1 month</option><option>1–3 months</option><option>3–6 months</option><option>6+ months</option>
-                  </select>
-                </div>
+                <div className="col-md-6"><label className="form-label fw-semibold" htmlFor="contact-service">Service</label><select id="contact-service" name="service" value={form.service} onChange={updateField} className="form-select form-control" required><option value="" disabled>Select a service</option>{services.map(service => <option key={service.title} value={service.title}>{service.title}</option>)}</select></div>
+                <div className="col-md-6"><label className="form-label fw-semibold" htmlFor="contact-timeline">Target timeline</label><select id="contact-timeline" name="timeline" value={form.timeline} onChange={updateField} className="form-select form-control"><option value="">Select timeline</option><option>Under 1 month</option><option>1–3 months</option><option>3–6 months</option><option>6+ months</option></select></div>
                 <div className="col-12"><label className="form-label fw-semibold" htmlFor="contact-details">Project details</label><textarea id="contact-details" name="details" value={form.details} onChange={updateField} className="form-control" rows="6" required placeholder="Tell us about your idea, users, scope, integrations and goals"></textarea></div>
                 <div className="col-12 d-flex flex-column flex-sm-row align-items-sm-center gap-3">
-                  <button className="btn btn-primary btn-lg px-4" type="submit">Send Enquiry <i className="bi bi-arrow-up-right ms-2" aria-hidden="true"></i></button>
+                  <button className="btn btn-primary btn-lg px-4" type="submit" disabled={status.type === 'submitting'}>{status.type === 'submitting' ? 'Sending…' : 'Send Enquiry'} <i className="bi bi-arrow-up-right ms-2" aria-hidden="true"></i></button>
                   <a className="btn btn-outline-secondary btn-lg px-4" href="mailto:hello@nexgenengineers.com">Email Us</a>
                 </div>
                 <div className="col-12" id="contact-status" aria-live="polite">
-                  {submitted && <div className="alert alert-success mb-0" role="status"><i className="bi bi-check-circle me-2" aria-hidden="true"></i>Your email client is being opened with the enquiry details. If it does not open, use the Email Us button.</div>}
+                  {status.message && <div className={`alert ${status.type === 'success' ? 'alert-success' : 'alert-info'} mb-0`} role="status">{status.message}</div>}
                 </div>
               </div>
             </form>
