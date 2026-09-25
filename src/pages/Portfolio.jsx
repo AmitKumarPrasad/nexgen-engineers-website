@@ -1,0 +1,5 @@
+import Intro from '../components/Intro';
+
+const projects=[['Education Management Platform','Student, teacher, attendance, fees and communication workflows.'],['Business Automation Portal','Workflow automation, API integrations and operational dashboards.'],['AI Assistant Platform','Conversational AI, retrieval and intelligent business workflows.']];
+
+export default function Portfolio(){ return <><Intro eyebrow="Portfolio" title="Selected solution patterns." text="A preview of the kinds of platforms and products NexGen can deliver."/><section className="section-space"><div className="container"><div className="row g-4">{projects.map(([title,text])=><div className="col-lg-4" key={title}><div className="project-card h-100"><div className="project-visual"><i className="bi bi-grid-3x3-gap"></i></div><div className="p-4"><span className="eyebrow">Case study</span><h4 className="mt-2">{title}</h4><p className="text-secondary">{text}</p></div></div></div>)}</div></div></section></>}
