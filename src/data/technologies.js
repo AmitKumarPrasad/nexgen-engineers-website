@@ -1,0 +1,1 @@
+export const technologies = ['Java','Spring Boot','React','Python','FastAPI','PostgreSQL','MySQL','MongoDB','Redis','Kafka','RabbitMQ','Docker','Kubernetes','AWS','Azure','OpenAI','Gemini'];
