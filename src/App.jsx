@@ -8,7 +8,9 @@ import Technologies from './pages/Technologies';
 import Portfolio from './pages/Portfolio';
 import Contact from './pages/Contact';
 
-function Layout({ children }) { return <><Navbar />{children}<Footer /></>; }
+function Layout({ children }) {
+  return <><a className="skip-link" href="#main-content">Skip to main content</a><Navbar /><main id="main-content">{children}</main><Footer /></>;
+}
 
 export default function App() {
   return <BrowserRouter><Layout><Routes>
