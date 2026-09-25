@@ -5,9 +5,12 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './styles.css';
 import App from './App';
+import MonitoringErrorBoundary from './components/MonitoringErrorBoundary';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <MonitoringErrorBoundary>
+      <App />
+    </MonitoringErrorBoundary>
   </StrictMode>
 );

@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Analytics from './components/Analytics';
 import Home from './pages/Home';
 import About from './pages/About';
 import ServicesPage from './pages/ServicesPage';
@@ -12,7 +13,7 @@ import Terms from './pages/Terms';
 import NotFound from './pages/NotFound';
 
 function Layout({ children }) {
-  return <><a className="skip-link" href="#main-content">Skip to main content</a><Navbar /><main id="main-content">{children}</main><Footer /></>;
+  return <><a className="skip-link" href="#main-content">Skip to main content</a><Navbar /><Analytics /><main id="main-content">{children}</main><Footer /></>;
 }
 
 export default function App() {
