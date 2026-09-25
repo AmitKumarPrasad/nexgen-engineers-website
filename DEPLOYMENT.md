@@ -21,7 +21,7 @@ Connect the GitHub repository and use:
 - Output directory: `dist`
 - Install command: `npm install`
 
-`vercel.json` provides the SPA fallback and baseline response headers.
+`vercel.json` provides the SPA fallback, caching and baseline security response headers.
 
 ### Netlify
 
@@ -47,6 +47,18 @@ Because `VITE_` values are public client-side configuration, do not store secret
 
 After enabling analytics, review the Privacy Policy and configure the analytics provider according to applicable privacy and consent requirements.
 
+## Security headers
+
+Vercel responses include:
+
+- `X-Content-Type-Options: nosniff`
+- `Referrer-Policy: strict-origin-when-cross-origin`
+- `X-Frame-Options: SAMEORIGIN`
+- `Permissions-Policy` disabling unused camera, microphone, geolocation and payment capabilities.
+- `Cross-Origin-Opener-Policy: same-origin`
+
+A Content Security Policy is intentionally not hard-coded yet because the optional Google Analytics integration and future third-party integrations require an explicit allowlist. Add a CSP after the production resource inventory is finalized and tested.
+
 ## Production verification
 
 After deployment, verify:
@@ -57,8 +69,9 @@ After deployment, verify:
 4. Browser refresh works on nested routes.
 5. Contact form opens the configured email client with encoded project details.
 6. Production build completes successfully with `npm run build`.
-7. If analytics is configured, page-view events appear in the analytics provider.
-8. If monitoring is configured, a controlled staging test confirms error delivery before production use.
+7. Security headers are present in the production response.
+8. If analytics is configured, page-view events appear in the analytics provider.
+9. If monitoring is configured, a controlled staging test confirms error delivery before production use.
 
 ## Environment variables
 
