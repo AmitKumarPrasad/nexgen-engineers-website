@@ -28,3 +28,5 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(79,124,255,.75);outline-offset:3px}
 @media(max-width:991px){.section-space{padding:72px 0}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+.legal-content{max-width:860px}.legal-content h2{font-size:1.35rem;font-weight:700;margin-top:2.5rem;margin-bottom:.75rem}.legal-content p{color:#5e6b80;line-height:1.75}.legal-content a{color:#4e6fe9;font-weight:600}.footer-link.mb-0{margin-top:0}

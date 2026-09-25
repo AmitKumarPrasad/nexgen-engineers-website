@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="col-sm-6 col-lg-2"><h2 className="h6 text-white">Services</h2><NavLink className="footer-link" to="/services">Software</NavLink><NavLink className="footer-link" to="/services">Cloud & DevOps</NavLink><NavLink className="footer-link" to="/services">AI & GenAI</NavLink></div>
         <div className="col-lg-3"><h2 className="h6 text-white">Build with us</h2><a className="footer-link" href="mailto:hello@nexgenengineers.com">hello@nexgenengineers.com</a><p className="text-white-50 mb-0">Pune, Maharashtra, India</p></div>
       </div>
-      <hr className="border-secondary opacity-25 my-4"/><small className="text-white-50">© {new Date().getFullYear()} NexGen Engineers. All rights reserved.</small>
+      <hr className="border-secondary opacity-25 my-4"/><div className="d-flex flex-wrap gap-3 align-items-center"><small className="text-white-50">© {new Date().getFullYear()} NexGen Engineers. All rights reserved.</small><NavLink className="footer-link mb-0" to="/privacy">Privacy</NavLink><NavLink className="footer-link mb-0" to="/terms">Terms</NavLink></div>
     </div>
   </footer>;
 }

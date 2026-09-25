@@ -7,6 +7,9 @@ import ServicesPage from './pages/ServicesPage';
 import Technologies from './pages/Technologies';
 import Portfolio from './pages/Portfolio';
 import Contact from './pages/Contact';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
+import NotFound from './pages/NotFound';
 
 function Layout({ children }) {
   return <><a className="skip-link" href="#main-content">Skip to main content</a><Navbar /><main id="main-content">{children}</main><Footer /></>;
@@ -20,5 +23,8 @@ export default function App() {
     <Route path="/technologies" element={<Technologies />} />
     <Route path="/portfolio" element={<Portfolio />} />
     <Route path="/contact" element={<Contact />} />
+    <Route path="/privacy" element={<Privacy />} />
+    <Route path="/terms" element={<Terms />} />
+    <Route path="*" element={<NotFound />} />
   </Routes></Layout></BrowserRouter>;
 }
