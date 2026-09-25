@@ -32,7 +32,7 @@ Connect the GitHub repository and use:
 
 `public/_redirects` provides the React Router fallback.
 
-## Production analytics and monitoring
+## Production analytics, monitoring and contact API
 
 Optional environment variables can be configured in the hosting provider:
 
@@ -40,12 +40,11 @@ Optional environment variables can be configured in the hosting provider:
 | --- | --- |
 | `VITE_GA_MEASUREMENT_ID` | Enables Google Analytics 4 page-view tracking in production. |
 | `VITE_MONITORING_ENDPOINT` | Sends uncaught React render errors to a server-side monitoring endpoint. |
+| `VITE_CONTACT_ENDPOINT` | Enables JSON POST submission to the production contact service. |
 
-Analytics is not initialized during local development. Monitoring falls back to browser console reporting when no endpoint is configured.
+Analytics is not initialized during local development. Monitoring falls back to browser console reporting when no endpoint is configured. If the contact endpoint is unavailable, the contact form falls back to the user's email client.
 
-Because `VITE_` values are public client-side configuration, do not store secrets in them. Use a backend/serverless endpoint for authenticated or sensitive monitoring integrations.
-
-After enabling analytics, review the Privacy Policy and configure the analytics provider according to applicable privacy and consent requirements.
+Because `VITE_` values are public client-side configuration, do not store secrets in them. Use a backend/serverless endpoint for authenticated or sensitive integrations.
 
 ## Security headers
 
@@ -68,6 +67,10 @@ The production build publishes:
 
 The sitemap uses the production canonical domain `https://nexgenengineers.com`. Keep it synchronized when public routes are added or removed.
 
+## Operational endpoints
+
+`/health.txt` is a lightweight deployment marker. It can be used as a simple availability check for a static deployment, while the hosting provider remains the authoritative source for build/deployment status.
+
 ## Production verification
 
 After deployment, verify:
@@ -78,12 +81,13 @@ After deployment, verify:
 4. Browser refresh works on nested routes.
 5. `/robots.txt` is reachable and references the sitemap.
 6. `/sitemap.xml` is reachable and contains the intended canonical routes.
-7. Contact form opens the configured email client with encoded project details.
-8. Production build completes successfully with `npm run build`.
-9. Security headers are present in the production response.
-10. If analytics is configured, page-view events appear in the analytics provider.
-11. If monitoring is configured, a controlled staging test confirms error delivery before production use.
+7. `/health.txt` is reachable.
+8. Contact form submits to the configured endpoint when enabled and falls back to email when it is unavailable.
+9. Production build completes successfully with `npm run build`.
+10. Security headers are present in the production response.
+11. If analytics is configured, page-view events appear in the analytics provider.
+12. If monitoring is configured, a controlled staging test confirms error delivery before production use.
 
 ## Environment variables
 
-The website does not require client-side environment variables for its core functionality. Optional analytics/monitoring variables are documented above. Keep future secrets out of the frontend bundle; server-side integrations should be added through a backend or serverless function.
+The website does not require client-side environment variables for its core functionality. Optional analytics, monitoring and contact API variables are documented above. Keep future secrets out of the frontend bundle; server-side integrations should be added through a backend or serverless function.
