@@ -59,6 +59,15 @@ Vercel responses include:
 
 A Content Security Policy is intentionally not hard-coded yet because the optional Google Analytics integration and future third-party integrations require an explicit allowlist. Add a CSP after the production resource inventory is finalized and tested.
 
+## SEO and crawlability
+
+The production build publishes:
+
+- `/robots.txt` with a public crawl policy.
+- `/sitemap.xml` containing the canonical public routes.
+
+The sitemap uses the production canonical domain `https://nexgenengineers.com`. Keep it synchronized when public routes are added or removed.
+
 ## Production verification
 
 After deployment, verify:
@@ -67,11 +76,13 @@ After deployment, verify:
 2. `/privacy` and `/terms` load directly.
 3. An unknown URL displays the 404 page.
 4. Browser refresh works on nested routes.
-5. Contact form opens the configured email client with encoded project details.
-6. Production build completes successfully with `npm run build`.
-7. Security headers are present in the production response.
-8. If analytics is configured, page-view events appear in the analytics provider.
-9. If monitoring is configured, a controlled staging test confirms error delivery before production use.
+5. `/robots.txt` is reachable and references the sitemap.
+6. `/sitemap.xml` is reachable and contains the intended canonical routes.
+7. Contact form opens the configured email client with encoded project details.
+8. Production build completes successfully with `npm run build`.
+9. Security headers are present in the production response.
+10. If analytics is configured, page-view events appear in the analytics provider.
+11. If monitoring is configured, a controlled staging test confirms error delivery before production use.
 
 ## Environment variables
 
