@@ -23,6 +23,9 @@ Every push and pull request targeting `main` runs the production build through G
 - Technologies
 - Portfolio
 - Contact
+- Privacy Policy
+- Terms of Use
+- 404 fallback
 
 ## Stack
 React 19 • Vite • Bootstrap 5 • Bootstrap Icons • React Router
