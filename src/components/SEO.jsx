@@ -1,23 +1,28 @@
 import { useEffect } from 'react';
 
+const siteUrl = 'https://nexgenengineers.com';
+
 export default function SEO({ title, description }) {
   useEffect(() => {
     document.title = title;
-    const descriptionTag = document.querySelector('meta[name="description"]');
-    if (descriptionTag) descriptionTag.setAttribute('content', description);
 
+    const canonicalUrl = `${siteUrl}${window.location.pathname}`;
     const metadata = {
-      'og:title': title,
-      'og:description': description,
-      'twitter:title': title,
-      'twitter:description': description
+      description: { selector: 'meta[name="description"]', value: description },
+      'og:title': { selector: 'meta[property="og:title"]', value: title },
+      'og:description': { selector: 'meta[property="og:description"]', value: description },
+      'og:url': { selector: 'meta[property="og:url"]', value: canonicalUrl },
+      'twitter:title': { selector: 'meta[name="twitter:title"]', value: title },
+      'twitter:description': { selector: 'meta[name="twitter:description"]', value: description },
     };
 
-    Object.entries(metadata).forEach(([name, content]) => {
-      const selector = `meta[property="${name}"], meta[name="${name}"]`;
+    Object.values(metadata).forEach(({ selector, value }) => {
       const tag = document.querySelector(selector);
-      if (tag) tag.setAttribute('content', content);
+      if (tag) tag.setAttribute('content', value);
     });
+
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute('href', canonicalUrl);
   }, [title, description]);
 
   return null;
