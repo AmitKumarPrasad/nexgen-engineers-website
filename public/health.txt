@@ -1,0 +1,1 @@
+NexGen Engineers website operational status: static frontend deployment artifact is available when the hosting platform reports a successful build.
